@@ -21,16 +21,16 @@ module Primer
 
       # Replacements for some classnames that end up being a different argument key
       REPLACEMENT_KEYS = {
-        "^anim" => "animation",
-        "^v-align" => "vertical_align",
-        "^d" => "display",
-        "^wb" => "word_break",
-        "^v" => "visibility",
-        "^width" => "w",
-        "^height" => "h",
-        "^color-bg" => "bg",
-        "^color-border" => "border_color",
-        "^color-fg" => "color"
+        /^anim/ => :animation,
+        /^v-align/ => :vertical_align,
+        /^d/ => :display,
+        /^wb/ => :word_break,
+        /^v/ => :visibility,
+        /^width/ => :w,
+        /^height/ => :h,
+        /^color-bg/ => :bg,
+        /^color-border/ => :border_color,
+        /^color-fg/ => :color
       }.freeze
 
       SUPPORTED_KEY_CACHE = Hash.new { |h, k| h[k] = !UTILITIES[k].nil? }
@@ -193,8 +193,8 @@ module Primer
         end
 
         def infer_selector_key(selector)
-          REPLACEMENT_KEYS.each do |k, v|
-            return v.to_sym if selector.match?(Regexp.new(k))
+          REPLACEMENT_KEYS.each do |pattern, replacement|
+            return replacement if selector.match?(pattern)
           end
           selector.split("-").first.to_sym
         end
